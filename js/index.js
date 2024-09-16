@@ -2,7 +2,8 @@
 
 var debug = false;
 var authenticated = false;
-const serverUrl = "http://localhost:3000";
+// const serverUrl = "http://localhost:3000";
+const serverUrl = "https://giftdeliveryapp-server.onrender.com";
 
 $(document).ready(function () {
 	// Perform action before the page show. check wheather the user is logged in or not.
@@ -29,8 +30,10 @@ $(document).ready(function () {
 
 
 	function authMiddleware() {
+
 		let authUser = localStorage.getItem('_token');
-		if (authUser == null || authUser == undefined) {
+		if (authUser == "null" || authUser == "undefined" || authUser == null || authUser == undefined) {
+			
 			alert("Please login to access the page.")
 			$.mobile.changePage("#loginPage");
 		}
@@ -80,7 +83,6 @@ $(document).ready(function () {
 		if (localStorage.inputData != null) {
 
 			var inputData = JSON.parse(localStorage.getItem("inputData"));
-			var allUsers = JSON.parse(localStorage.getItem("allUsers"));
 			$.ajax({
 				method: "POST",
 				contentType: "application/json; charset=utf-8",
@@ -92,25 +94,12 @@ $(document).ready(function () {
 					localStorage.setItem("_token", data.data.token);
 				}
 				authenticated = true;
+				$("#loginForm").trigger('reset');
 				$.mobile.changePage("#homePage");
 
 			}).error(function (err) {
 
 			})
-			// Check and validate the user information for the login
-			allUsers.forEach(function (userData) {
-
-				if (inputData.email == userData.email && inputData.password == userData.password) {
-					alert("Login success");
-					localStorage.setItem("userInfo", JSON.stringify(userData));
-				}
-			});
-
-			if (authenticated == false) {
-				alert("Login failed");
-			}
-
-			$("#loginForm").trigger('reset');
 		}
 	})
 
@@ -200,7 +189,7 @@ $(document).ready(function () {
 			var userToken = (localStorage.getItem("_token"));
 
 			orderInfo.orderNo = Math.trunc(Math.random() * 1000000);
-
+			// call the backend service to store the data
 			$.ajax({
 				method: "POST",
 				contentType: "application/json; charset=utf-8",

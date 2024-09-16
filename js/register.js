@@ -10,7 +10,7 @@ $(document).ready(function () {
 		localStorage.removeItem("registerFormInputData");
 
 		$("#registerForm").submit();
-
+		// call backend server to store the data
 		if (localStorage.registerFormInputData != null) {
 			var registerFormInputData = JSON.parse(localStorage.getItem("registerFormInputData"));
 			$.ajax({
@@ -22,12 +22,17 @@ $(document).ready(function () {
 			}).done(function (data, statusText, xhrObj) {
 				alert("User has been registered successfully");
 				if(data.status == 200) {
+					// store the authentication token in the local storage
 					localStorage.setItem('_token', data.data.token);
 				}
 				$("#registerForm").trigger('reset');
 				$.mobile.changePage("#homePage");
-			}).error(function (xhr) {
-				alert("Error: " + JSON.stringify(xhr));
+			}).error(function (xhr) {console.log(xhr)
+				if(xhr.status == 400) {
+					xhr.responseJSON.errors.forEach(element => {
+						alert(element.error)
+					});
+				}
 			})
 
 		}
