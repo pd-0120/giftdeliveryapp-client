@@ -161,6 +161,7 @@ $(document).ready(function () {
 			var userToken = (localStorage.getItem("_token"));
 
 			orderInfo.orderNo = Math.trunc(Math.random() * 1000000);
+			orderInfo.fullName = localStorage.getItem('fullName');
 			// call the backend service to store the data
 			$.ajax({
 				method: "POST",
@@ -174,6 +175,7 @@ $(document).ready(function () {
 			}).done(function (data, statusText, xhrObj) {
 				authenticated = true;
 				$("#orderForm").trigger('reset');
+				localStorage.setItem("orderInfo", JSON.stringify(orderInfo) );
 				$.mobile.changePage("#orderConfirmationPage");
 
 			}).error(function (err) {
@@ -301,7 +303,7 @@ $(document).ready(function () {
 			$('#orderInfo').append('<tr><td>Customer: </td><td><span class=\"fcolor\">' + fullName + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Item: </td><td><span class=\"fcolor\">' + orderInfo.item + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Price: </td><td><span class=\"fcolor\">' + orderInfo.price + '</span></td></tr>');
-			$('#orderInfo').append('<tr><td>Recipient: </td><td><span class=\"fcolor\">' + orderInfo.firstName + ' ' + orderInfo.lastName + '</span></td></tr>');
+			$('#orderInfo').append('<tr><td>Recipient: </td><td><span class=\"fcolor\">' + orderInfo.fullName + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Phone number: </td><td><span class=\"fcolor\">' + orderInfo.phoneNumber + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Address: </td><td><span class=\"fcolor\">' + orderInfo.address + ' ' + orderInfo.postcode + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Dispatch date: </td><td><span class=\"fcolor\">' + orderInfo.date + '</span></td></tr>');
