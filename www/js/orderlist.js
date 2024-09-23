@@ -23,12 +23,13 @@ $(document).ready(function () {
 			userOrders = data.data;
 			
 			if (userOrders != null && userOrders.length > 0) {
-				
+				let fullName = localStorage.getItem("fullName");
+
 				// make html to attache to an element
 				userOrders.forEach(orderInfo => {
 					$(listElement).append('<br><table><tbody>');
 					$(listElement).append('<tr><td>Order no: </td><td><span class=\"fcolor\">' + orderInfo.orderNo + '</span></td></tr>');
-					$(listElement).append('<tr><td>Customer: </td><td><span class=\"fcolor\">' + orderInfo.customerEmail + '</span></td></tr>');
+					$(listElement).append('<tr><td>Customer: </td><td><span class=\"fcolor\">' + fullName + '</span></td></tr>');
 					$(listElement).append('<tr><td>Item: </td><td><span class=\"fcolor\">' + orderInfo.item + '</span></td></tr>');
 					$(listElement).append('<tr><td>Price: </td><td><span class=\"fcolor\">' + orderInfo.price + '</span></td></tr>');
 					$(listElement).append('<tr><td>Recipient: </td><td><span class=\"fcolor\">' + orderInfo.firstName + ' ' + orderInfo.lastName + '</span></td></tr>');

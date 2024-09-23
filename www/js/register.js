@@ -24,6 +24,7 @@ $(document).ready(function () {
 				if(data.status == 200) {
 					// store the authentication token in the local storage
 					localStorage.setItem('_token', data.data.token);
+					localStorage.setItem("fullName", data.data.fullName);
 				}
 				$("#registerForm").trigger('reset');
 				$.mobile.changePage("#homePage");

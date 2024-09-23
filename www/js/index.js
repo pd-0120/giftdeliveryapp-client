@@ -38,35 +38,6 @@ $(document).ready(function () {
 			$.mobile.changePage("#loginPage");
 		}
 	}
-	// Create default user for the system.
-	if (!localStorage.allUsers) {
-
-		if (debug) alert("Users not found - creating a default user!");
-
-		var userData = {
-			email: "admin@domain.com",
-			password: "admin",
-			firstName: "CQU",
-			lastName: "User",
-			state: "QLD",
-			phoneNumber: "0422919919",
-			address: "700 Yamba Road",
-			postcode: "4701"
-		};
-
-		var allUsers = [];
-		allUsers.push(userData);
-
-		if (debug) alert(JSON.stringify(allUsers));
-		localStorage.setItem("allUsers", JSON.stringify(allUsers));
-
-	} else {
-
-		if (debug) alert("Names Array found-loading..");
-
-		var allUsers = JSON.parse(localStorage.allUsers);
-		if (debug) alert(JSON.stringify(allUsers));
-	}
 
 
 
@@ -92,6 +63,7 @@ $(document).ready(function () {
 			}).done(function (data, statusText, xhrObj) {
 				if (data.status == 200) {
 					localStorage.setItem("_token", data.data.token);
+					localStorage.setItem("fullName", data.data.fullName);
 				}
 				authenticated = true;
 				$("#loginForm").trigger('reset');
@@ -323,10 +295,10 @@ $(document).ready(function () {
 		if (localStorage.orderInfo != null) {
 
 			var orderInfo = JSON.parse(localStorage.getItem("orderInfo"));
-
+			let fullName = localStorage.getItem("fullName");
 			$('#orderInfo').append('<br><table><tbody>');
 			$('#orderInfo').append('<tr><td>Order no: </td><td><span class=\"fcolor\">' + orderInfo.orderNo + '</span></td></tr>');
-			$('#orderInfo').append('<tr><td>Customer: </td><td><span class=\"fcolor\">' + orderInfo.customerEmail + '</span></td></tr>');
+			$('#orderInfo').append('<tr><td>Customer: </td><td><span class=\"fcolor\">' + fullName + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Item: </td><td><span class=\"fcolor\">' + orderInfo.item + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Price: </td><td><span class=\"fcolor\">' + orderInfo.price + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Recipient: </td><td><span class=\"fcolor\">' + orderInfo.firstName + ' ' + orderInfo.lastName + '</span></td></tr>');
@@ -341,6 +313,7 @@ $(document).ready(function () {
 
 	$('#logoutBtn').click(function() {
 		localStorage.removeItem('_token');
+		localStorage.removeItem('fullName');
 		$.mobile.changePage("#loginPage");
 	})
 
