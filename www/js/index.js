@@ -2,8 +2,8 @@
 
 var debug = false;
 var authenticated = false;
-const serverUrl = "http://localhost:3000";
-// const serverUrl = "https://giftdeliveryapp-server.onrender.com";
+// const serverUrl = "http://localhost:3000";
+const serverUrl = "https://giftdeliveryapp-server.onrender.com";
 
 $(document).ready(function () {
 	// Perform action before the page show. check wheather the user is logged in or not.
