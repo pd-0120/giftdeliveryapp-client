@@ -2,12 +2,12 @@
 
 var debug = false;
 var authenticated = false;
-// const serverUrl = "http://localhost:3000";
-const serverUrl = "https://giftdeliveryapp-server.onrender.com";
+const serverUrl = "http://localhost:3000";
+// const serverUrl = "https://giftdeliveryapp-server.onrender.com";
 
 $(document).ready(function () {
 	// Perform action before the page show. check wheather the user is logged in or not.
-
+	
 	$(document).on("pagebeforeshow", "#homePage", function () {
 		authMiddleware();
 	})
@@ -33,7 +33,7 @@ $(document).ready(function () {
 
 		let authUser = localStorage.getItem('_token');
 		if (authUser == "null" || authUser == "undefined" || authUser == null || authUser == undefined) {
-			
+
 			alert("Please login to access the page.")
 			$.mobile.changePage("#loginPage");
 		}
@@ -54,6 +54,7 @@ $(document).ready(function () {
 		if (localStorage.inputData != null) {
 
 			var inputData = JSON.parse(localStorage.getItem("inputData"));
+			console.log(inputData)
 			$.ajax({
 				method: "POST",
 				contentType: "application/json; charset=utf-8",
@@ -64,13 +65,22 @@ $(document).ready(function () {
 				if (data.status == 200) {
 					localStorage.setItem("_token", data.data.token);
 					localStorage.setItem("fullName", data.data.fullName);
+
+					authenticated = true;
+					$("#loginForm").trigger('reset');
+					$.mobile.changePage("#homePage");
 				}
-				authenticated = true;
-				$("#loginForm").trigger('reset');
-				$.mobile.changePage("#homePage");
 
 			}).error(function (err) {
-
+				if (err.responseJSON.status == 400) {
+					const errors = err.responseJSON.error;
+					console.log(errors)
+					if (errors && errors.length > 0) {
+						errors.forEach(error => {
+							alert(error.value())
+						})
+					}
+				}
 			})
 		}
 	})
@@ -175,7 +185,7 @@ $(document).ready(function () {
 			}).done(function (data, statusText, xhrObj) {
 				authenticated = true;
 				$("#orderForm").trigger('reset');
-				localStorage.setItem("orderInfo", JSON.stringify(orderInfo) );
+				localStorage.setItem("orderInfo", JSON.stringify(orderInfo));
 				$.mobile.changePage("#orderConfirmationPage");
 
 			}).error(function (err) {
@@ -278,6 +288,8 @@ $(document).ready(function () {
 		$("#itemSelected").html(localStorage.getItem("itemName"));
 		$("#priceSelected").html(localStorage.getItem("itemPrice"));
 		$("#imageSelected").attr('src', localStorage.getItem("itemImage"));
+		const today = new Date().toISOString().split('T')[0];
+		document.getElementById('order_date').setAttribute('min', today);
 
 	});
 
@@ -303,7 +315,7 @@ $(document).ready(function () {
 			$('#orderInfo').append('<tr><td>Customer: </td><td><span class=\"fcolor\">' + fullName + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Item: </td><td><span class=\"fcolor\">' + orderInfo.item + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Price: </td><td><span class=\"fcolor\">' + orderInfo.price + '</span></td></tr>');
-			$('#orderInfo').append('<tr><td>Recipient: </td><td><span class=\"fcolor\">' + orderInfo.fullName + '</span></td></tr>');
+			$('#orderInfo').append('<tr><td>Recipient: </td><td><span class=\"fcolor\">' + orderInfo.firstName  + " " + orderInfo.lastName + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Phone number: </td><td><span class=\"fcolor\">' + orderInfo.phoneNumber + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Address: </td><td><span class=\"fcolor\">' + orderInfo.address + ' ' + orderInfo.postcode + '</span></td></tr>');
 			$('#orderInfo').append('<tr><td>Dispatch date: </td><td><span class=\"fcolor\">' + orderInfo.date + '</span></td></tr>');
@@ -313,7 +325,7 @@ $(document).ready(function () {
 		}
 	});
 
-	$('#logoutBtn').click(function() {
+	$('#logoutBtn').click(function () {
 		localStorage.removeItem('_token');
 		localStorage.removeItem('fullName');
 		$.mobile.changePage("#loginPage");

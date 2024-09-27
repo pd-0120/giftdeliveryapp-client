@@ -41,10 +41,7 @@ $(document).ready(function () {
 			} else {
 				$(listElement).append("<p>No orders to show.</p>");
 			}
-			// $.mobile.changePage("#homePage");
-
 		}).error(function (err) {
-
 		})
 	});
 });

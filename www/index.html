@@ -147,7 +147,7 @@
 					</li>
 
 					<li>
-						<a href="#deleteOrderPage" class="deleteOrderLink">
+						<a href="#deleteOrderPage">
 							<img src="img/delete.png" alt="Delete image"/>
 							<div>
 								<h3 class = "fcolor">Delete Orders</h3>		
@@ -267,7 +267,7 @@
 					<input type="text" name="address" placeholder="Address details">
 					<input type="text" name="postcode" placeholder="Postcode">
 					<label class="fcolor">Choose the date</label>
-					<input type="date" data-clear-btn="true" name="date"  value="" >
+					<input type="date" data-clear-btn="true" name="date"  value="" id="order_date">
 					<a id="confirmOrderButton" href="#confirmPage" class="ui-btn ui-shadow ui-corner-all ui-btn-d">Confirm</a>
 					<button id="clearOrderButton" type="reset" class="ui-btn ui-shadow ui-corner-all">Clear</button>
 				</form>
@@ -331,7 +331,29 @@
 	<div data-role="page" id="deleteOrderPage">
 		<div data-role="header" data-theme="d" data-position="fixed">
 			<a href="javascript:history.go(-1)" class="ui-btn ui-btn-icon-left ui-icon-carat-l ui-btn-icon-notext ui-corner-all">go back</a>
-			<h1>Delete Order Confirmation</h1>
+			<h1>Delete Order</h1>
+			<a href="#homePage" class="ui-btn ui-btn-icon-left ui-icon-home ui-btn-icon-notext ui-corner-all">home</a>
+		</div>
+  	<!------------------------Main content---------------------------->
+		<div data-role="content" id="content">
+			<div class="wrap">
+				<div id="deleteOrderList"></div>
+				<div style="margin-top:25px">
+					<button class="ui-btn ui-shadow ui-corner-all ui-btn-d" id="deleteOrderBtn" disabled>Delete</button>
+
+				</div>
+			</div>
+		</div>
+		<!-- Application Page footer -->
+		<div data-role="footer" data-theme="d" data-position="fixed" class="footer" style="text-align:center;">
+			<p>Copyright © Gift Delivery 2024</p>
+		</div>
+	</div>
+
+	<div data-role="page" id="deleteOrderConfirmationPage">
+		<div data-role="header" data-theme="d" data-position="fixed">
+			<a href="javascript:history.go(-1)" class="ui-btn ui-btn-icon-left ui-icon-carat-l ui-btn-icon-notext ui-corner-all">go back</a>
+			<h1>Delete Confirmation</h1>
 			<a href="#homePage" class="ui-btn ui-btn-icon-left ui-icon-home ui-btn-icon-notext ui-corner-all">home</a>
 		</div>
   	<!------------------------Main content---------------------------->
